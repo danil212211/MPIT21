@@ -3,7 +3,7 @@
 <NavBar></NavBar>
 
   <b-row>
-    <b-col lg="4" sm="12">1 of 3</b-col>
+    <b-col lg="4" sm="12">Добро Пожаловать!</b-col>
     <b-col lg="4" sm="6">2 of 3</b-col>
     <b-col lg="4" sm="6">3 of 3</b-col>
   </b-row>

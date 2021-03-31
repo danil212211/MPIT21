@@ -8,19 +8,23 @@
         <div class="createQuestion" v-if="courseName!=''">
             <ul>
                 <li v-for="(input, index) in inputsQuestion" :key="index">
-                    <input type="text" class="inpQuestion" v-model="input.questionValue" placeholder="Вопрос"> <br>
-                    <!-- <p> {{input.questionValue}} </p> -->
-                    <input type="text" class="inpQuestion" v-model="input.answer" placeholder="Ответ"> <br>
-                    <!-- <p> {{input.answer}} </p> -->
+
+                    <input required type="text" class="inpQuestion" v-model="input.questionValue" v-if="inputsQuestion[index].type=='Question'" placeholder="Вопрос"> <br>
+                    <!-- <p v-if="inputsQuestion[index].type=='Question'"> {{input.questionValue}} </p> -->
+                    <input required type="text" class="inpQuestion" v-model="input.answer" v-if="inputsQuestion[index].type=='Question'" placeholder="Ответ"> <br>
+                    <input required type="text" class="inpQuestion" v-model="input.lessonValue" v-if="inputsQuestion[index].type=='Lesson'" placeholder="Урок"> <br>
+
+                    <!-- <p v-if="inputsQuestion[index].type=='Question'> {{input.answer}} </p> -->
                     <button @click="deleteRow(index)">Удалить</button>
                 </li>
             </ul>
             <button @click="addRow">Добавить вопрос</button>
+            <button @click="addRowLesson">Добавить Урок</button>
             <button @click="addQuestions">Готово</button>
         </div>
         <p> Вопросы: {{quesions}} </p>
         <p> Ответы: {{answers}} </p>
-
+        <p> Уроки: {{lessons}} </p>
         <button @click="sendIdentity">Отправить</button>
 
         <div> {{message}} </div>
@@ -35,10 +39,22 @@ export default {
             courseName: "",
             quesions: [],
             answers: [],
+            lessons: [],
             inputsQuestion:[],
             message: ""
         }
     },
+            mounted() {
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+        .then ( newEditor => {
+        editor=newEditor;
+        })
+            .catch( error => {
+                console.error( error );
+            } );
+
+        },
     methods:{ 
         addNameQuest(){
             document.querySelector("#qName").setAttribute("disabled", "disabled")
@@ -46,8 +62,16 @@ export default {
         addRow() {
             this.inputsQuestion.push({
                 questionValue: '',
-                answer: ''
+                answer: '',
+                type:'Question'
             })
+        },
+        addRowLesson() {
+            this.inputsQuestion.push({
+                lessonValue: '',
+                type:'Lesson'
+            })
+
         },
         deleteRow(index) {
             this.inputsQuestion.splice(index,1)
@@ -55,23 +79,35 @@ export default {
             this.answers.splice(index)
         },
         addQuestions(){
+        this.quesions=[];
+        this.answers=[];
+        this.lessons=[];
            for(let i=0;i<this.inputsQuestion.length;i++){
+           if (this.inputsQuestion[i].questionValue!=null) {
                 this.quesions.push(this.inputsQuestion[i].questionValue)
+            }
+            if (this.inputsQuestion[i].answer!=null) {
                 this.answers.push(this.inputsQuestion[i].answer)
-            }  
+            }
+            if (this.inputsQuestion[i].lessonValue!=null) {
+                this.lessons.push(this.inputsQuestion[i].lessonValue)
+            }
+            }
+              
         },
         sendIdentity: async function() {
             var param = {
                     courseName: this.courseName,
                     quesions: this.quesions,
                     answers: this.answers,
+                    lessons:this.lessons
                     //inputsQuestion: this.inputsQuestion,
                     //message: this.message
 
             };
             const str = JSON.stringify(param);
             this.$axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                this.$axios.post('/sendCourse.php',str)
+                this.$axios.post('/api/addCourse.php',str)
                     .then(function(response) {
                         console.log(response.data);
                         this.message = response.data
