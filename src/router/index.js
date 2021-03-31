@@ -4,7 +4,6 @@ import Home from '@/components/Home'
 import signup from '@/components/signup'
 import login from '@/components/login'
 import userHome from '@/components/userHome'
-import courseCreator from '@/components/courseCreator'
 Vue.use(Router)
 /* eslint-disable */
 export default new Router({ 
@@ -29,11 +28,6 @@ export default new Router({
 	  path: '/userHome',
 	  name: 'userHome',
 	  component: userHome
-	},
-	{
-	  path: '/createCourse',
-	  name: 'courseCreator',
-	  component : courseCreator
 	}
   ]
 }) 
