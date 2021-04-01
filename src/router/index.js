@@ -5,6 +5,8 @@ import signup from '@/components/signup'
 import login from '@/components/login'
 import userHome from '@/components/userHome'
 import courseCreator from '@/components/courseCreator'
+import courses from '@/components/lookCourses'
+import completeCourse from '@/components/lookTest'
 Vue.use(Router)
 /* eslint-disable */
 export default new Router({ 
@@ -34,6 +36,17 @@ export default new Router({
 	  path: '/createCourse',
 	  name: 'courseCreator',
 	  component : courseCreator
+	},
+	{
+	  path: '/courses',
+	  name: 'courses',
+	  component : courses
+	},
+	{
+	  path : '/completeCourse',
+	  name : 'completeCourse',
+	  component: completeCourse,
+      props: (route) => ({courseId: route.query.courseId})	
 	}
   ]
 }) 

@@ -1,8 +1,9 @@
 <?php
-require('database.php');
+include('database.php');
 class User {
 	private $userLogin = 'none';
 	private $userHash = 'none';
+	public $userID;
 	private $database;
 	private function generateRandomString($length = 10) {
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -17,6 +18,9 @@ class User {
 	public function __construct($userLoginBuffer) {
 		$this->userLogin=$userLoginBuffer;
 		$this->database = DataBase::getDataBase();
+		$request=mysqli_query($this->database,"SELECT ID FROM `USER` WHERE `LOGIN`='".$this->userLogin."'");
+		$fetched = mysqli_fetch_array($request);
+		$this->userID=$fetched["ID"];
 	}		
 	public function setHash($userHashBuffer) {
 		$this->userHash = $userHashBuffer;
@@ -57,6 +61,9 @@ class User {
 
 	public function getHash() {
 		return $this->userHash;
+	}
+	public function sendResultByCourseId($id,$result) {
+		$request= mysqli_query($this->database,"INSERT INTO `USERANSWERS` (`COURSEID`,`USERID`,`POINTS`) VALUES ('".$id."','".$this->userID."','".$result."')");
 	}
 }
 ?>
