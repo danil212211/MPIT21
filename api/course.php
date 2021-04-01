@@ -28,11 +28,20 @@ class courseElement {
   public function getElementCollection() {
   	return $this->courseQuestionCollection;
   }
-  public function insertCourse() {
+  public function insertCourse($data) {
 
-  	$request = mysqli_query($this->database,"INSERT INTO `COURSE` (`QUESTIONS`) VALUES ('123'); ");
-  	
-  	return $this->database->insert_id;
+  	$request = mysqli_query($this->database,"INSERT INTO `COURSE` (`TITLE`) VALUES ('".$data["courseName"]."'); ");
+  	$id=$this->database->insert_id;
+    for ($i=0;$i<count($data["questions"]);++$i) {
+    $request = mysqli_query($this->database,"INSERT INTO `QUESTIONS` (`COURSEID`,`VALUE`,`ANSWER`) VALUES ('".$id."', '".$data["questions"][$i]."','".$data["answers"][$i]."'); ");
+    }
+
+    for ($i=0;$i<count($data["lessons"]);++$i) {
+         $request = mysqli_query($this->database,"INSERT INTO `LESSONS` (`COURSEID`,`VALUE`) VALUES ('".$id."',  '".$data["lessons"][$i]."'); ");
+  
+    }
+    print_r($data);
+  	return $id;
   }
   }
 

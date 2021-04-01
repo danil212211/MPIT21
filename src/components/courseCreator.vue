@@ -22,7 +22,7 @@
             <button @click="addRowLesson">Добавить Урок</button>
             <button @click="addQuestions">Готово</button>
         </div>
-        <p> Вопросы: {{quesions}} </p>
+        <p> Вопросы: {{questions}} </p>
         <p> Ответы: {{answers}} </p>
         <p> Уроки: {{lessons}} </p>
         <button @click="sendIdentity">Отправить</button>
@@ -37,7 +37,7 @@ export default {
     data(){
         return{
             courseName: "",
-            quesions: [],
+            questions: [],
             answers: [],
             lessons: [],
             inputsQuestion:[],
@@ -75,16 +75,16 @@ export default {
         },
         deleteRow(index) {
             this.inputsQuestion.splice(index,1)
-            this.quesions.splice(index)
+            this.questions.splice(index)
             this.answers.splice(index)
         },
         addQuestions(){
-        this.quesions=[];
+        this.questions=[];
         this.answers=[];
         this.lessons=[];
            for(let i=0;i<this.inputsQuestion.length;i++){
            if (this.inputsQuestion[i].questionValue!=null) {
-                this.quesions.push(this.inputsQuestion[i].questionValue)
+                this.questions.push(this.inputsQuestion[i].questionValue)
             }
             if (this.inputsQuestion[i].answer!=null) {
                 this.answers.push(this.inputsQuestion[i].answer)
@@ -98,16 +98,15 @@ export default {
         sendIdentity: async function() {
             var param = {
                     courseName: this.courseName,
-                    quesions: this.quesions,
+                    questions: this.questions,
                     answers: this.answers,
                     lessons:this.lessons
                     //inputsQuestion: this.inputsQuestion,
                     //message: this.message
 
             };
-            const str = JSON.stringify(param);
             this.$axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                this.$axios.post('/api/addCourse.php',str)
+                this.$axios.post('/api/addCourse.php',param)
                     .then(function(response) {
                         console.log(response.data);
                         this.message = response.data

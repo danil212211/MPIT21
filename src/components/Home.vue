@@ -1,11 +1,13 @@
 <template>
 <b-container fluid>
-<NavBar></NavBar>
-
+<img class="first-circle" src="@/assets/first.png">
   <b-row>
-    <b-col lg="4" sm="12">Добро Пожаловать!</b-col>
-    <b-col lg="4" sm="6">2 of 3</b-col>
-    <b-col lg="4" sm="6">3 of 3</b-col>
+    <b-col cols="12">
+    <p>Курсы и тесты для сотрудников
+    </br>
+    <small>С использованием уникальной системы SmartTesting</small>
+    </p>
+    </b-col>
   </b-row>
 </b-container> 
 
@@ -22,4 +24,16 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+p{
+  font-size: 33px;
+}
+.first-circle{
+left:0;
+top:0;
+  position:absolute;
+  width:100%;
+  object-fit:cover;
+
+
+}
 </style>
